@@ -6,33 +6,24 @@ import "CoreLibs/crank"
 import "CoreLibs/animation"
 import "CoreLibs/frameTimer"
 
+import "utils/Utils"
 
 import "sprites/GunSprite"
+import "sprites/TargetSprite"
 import "models/BarrelEnum"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-local previousLoopTime = 0
-
-local function getDeltaTime()
-    local currentTime = playdate.getCurrentTimeMilliseconds()
-    local deltaTime = currentTime - previousLoopTime
-    previousLoopTime = currentTime
-
-    return deltaTime
-end
-
--- local gunImage = gfx.image.new("images/shutgun-sprite-modified-ditherlicious")
--- gunImage:draw(0, 0, gfx.kImageUnflipped, 0, 0, 50, 50)
--- local gunSprite = gfx.sprite.new(gunImage)
--- gunSprite:add()
-
 local gunSprite
+local targetSprite
 
 local function initialize()
     gunSprite = GunSprite(0, 0)
     gunSprite:add()
+
+    targetSprite = TargetSprite(400 / 2, 240 / 2, 40,40)
+    targetSprite:add()
 end
 
 initialize()
