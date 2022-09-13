@@ -1,0 +1,13 @@
+{
+    "Lua.diagnostics.globals": ["playdate", "import"],
+    "emeraldwalk.runonsave": {
+
+      "commands": [
+             {
+                 "match": "\\.lua$",
+                 "cmd": "pdc ${workspaceFolder}/source bin/duckhunter.pdx"
+             }
+      ]
+},
+"task.allowAutomaticTasks": "on"
+  }
