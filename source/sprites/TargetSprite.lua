@@ -9,6 +9,7 @@ function TargetSprite:init(x, y, width, height)
     TargetSprite.super.init(self)
     self:moveTo(x, y)
     self:setSize(width, height)
+    self:setZIndex(-10000)
 
     self.draw = function(s, x, y, w, h)
 
@@ -27,7 +28,7 @@ function TargetSprite:init(x, y, width, height)
     self:setCenter(0, 0)
 
     self.speed = 10
-    self:setCollideRect(0, 0, self:getSize())
+    -- self:setCollideRect(0, 0, self:getSize())
 end
 
 function TargetSprite:GetX()

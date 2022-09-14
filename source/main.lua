@@ -7,6 +7,7 @@ import "CoreLibs/animation"
 import "CoreLibs/frameTimer"
 
 import "utils/Utils"
+import "utils/CustomAnimation"
 
 import "sprites/GunSprite"
 import "sprites/TargetSprite"
@@ -22,7 +23,7 @@ local function initialize()
     gunSprite = GunSprite(0, 0)
     gunSprite:add()
 
-    targetSprite = TargetSprite(400 / 2, 240 / 2, 40,40)
+    targetSprite = TargetSprite(400 / 2, 240 / 2, 40, 40)
     targetSprite:add()
 end
 
@@ -34,7 +35,10 @@ function playdate.update()
 
     gfx.sprite.update()
 
+    -- refresh target view cause display bug :(
+    targetSprite:setVisible(false)
     gunSprite:draw()
+    targetSprite:setVisible(true)
 
     playdate.timer.updateTimers()
     playdate.frameTimer.updateTimers()
