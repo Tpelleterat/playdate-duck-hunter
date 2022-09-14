@@ -75,6 +75,8 @@ function TargetSprite:update()
     end
 
     -- refresh target view cause display bug :(
-    self:setVisible(false)
-    self:setVisible(true)
+    if self:isVisible() then
+        self:setVisible(false)
+        self:setVisible(true)
+    end
 end

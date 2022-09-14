@@ -5,7 +5,16 @@ class('GunSprite').extends(gfx.sprite)
 
 function GunSprite:init(x, y, r)
     GunSprite.super.init(self)
+    self.pendingRefill = false
+    self.leftBarrelFilled = true
+    self.rightBarrelFilled = true
 
+    self:initGunImage()
+    self:initFireAnimation()
+    self:initReloadAnimation()
+end
+
+function GunSprite:initGunImage()
     self.standardPosition = gfx.sprite.new()
     self.gunReadyPositionImage = gfx.image.new("images/gun-standard-position")
     local w, h = self.gunReadyPositionImage:getSize()
@@ -13,9 +22,10 @@ function GunSprite:init(x, y, r)
     self.standardPosition:setImage(self.gunReadyPositionImage)
     self.standardPosition:setCenter(0, 0)
     self.standardPosition:moveTo(400 / 2 - w / 2, 240 - h)
-
     self.standardPosition:add()
+end
 
+function GunSprite:initFireAnimation()
     local fireImageList = gfx.imagetable.new("images/gun-fire")
     local animDrawPositionCallback = function(w, h, ajustX, ajustY)
         local xPos = self.standardPosition.x + ajustX
@@ -24,10 +34,19 @@ function GunSprite:init(x, y, r)
         return xPos, yPos
     end
     self.fireCustomAnimation = CustomAnimation(fireImageList, 50, animDrawPositionCallback, 0, 25, -12, 25)
+end
 
-    self.pendingRefill = false
-    self.leftBarrelFilled = true
-    self.rightBarrelFilled = true
+function GunSprite:initReloadAnimation()
+    local fireImageList = gfx.imagetable.new("images/gun-reload")
+
+    local animDrawPositionCallback = function(w, h, ajustX, ajustY)
+        local xPos = 400 / 2 - w / 2 + ajustX
+        local yPos = 240 - h + ajustY
+
+        return xPos, yPos
+    end
+    self.reloadCustomAnimation = CustomAnimation(fireImageList, 1500, animDrawPositionCallback,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 end
 
 function GunSprite:CanFire(barrel)
@@ -53,7 +72,24 @@ function GunSprite:fire(barrel)
         elseif barrel == BarrelEnum.RIGHT then
             self.rightBarrelFilled = false
         end
+
+        return true
     end
+
+    return false
+end
+
+function GunSprite:checkShouldReload()
+    local degreesChanged = playdate.getCrankChange()
+
+    if not self.pendingRefill and degreesChanged > 30 then
+        self:reload()
+    end
+end
+
+function GunSprite:reload()
+    self.pendingRefill = true
+    self.reloadCustomAnimation:start()
 end
 
 function GunSprite:drawFire()
@@ -62,8 +98,33 @@ function GunSprite:drawFire()
     end
 end
 
+function GunSprite:updateReload()
+    if self.reloadCustomAnimation.animation ~= nil and not self.reloadCustomAnimation.animation:ended() then
+        self.reloadCustomAnimation:draw()
+    elseif self.pendingRefill then
+        self.leftBarrelFilled = true
+        self.rightBarrelFilled = true
+        self.pendingRefill = false
+    end
+end
+
+function GunSprite:manageGunVisibility()
+    if self.pendingRefill and self.standardPosition:isVisible() then
+        self.standardPosition:setVisible(false)
+    elseif not self.pendingRefill and not self.standardPosition:isVisible() then
+        self.standardPosition:setVisible(true)
+    end
+end
+
 function GunSprite:update()
     GunSprite.super.update(self)
 
+    self:manageGunVisibility()
+
     self:drawFire()
+
+    self:checkShouldReload()
+
+    self:updateReload()
+
 end

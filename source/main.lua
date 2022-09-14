@@ -32,6 +32,12 @@ initialize()
 function playdate.update()
     math.randomseed(playdate.getSecondsSinceEpoch())
 
+    if gunSprite.pendingRefill and targetSprite:isVisible() then
+        targetSprite:setVisible(false)
+    elseif not gunSprite.pendingRefill and not targetSprite:isVisible() then
+        targetSprite:setVisible(true)
+    end
+
     gfx.sprite.update()
 
     playdate.timer.updateTimers()
