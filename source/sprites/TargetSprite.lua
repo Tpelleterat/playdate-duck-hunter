@@ -73,4 +73,8 @@ function TargetSprite:update()
     if newX ~= self.x or newY ~= self.y then
         self:moveTo(newX, newY)
     end
+
+    -- refresh target view cause display bug :(
+    self:setVisible(false)
+    self:setVisible(true)
 end

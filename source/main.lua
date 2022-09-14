@@ -30,15 +30,9 @@ end
 initialize()
 
 function playdate.update()
-    local dt = getDeltaTime()
     math.randomseed(playdate.getSecondsSinceEpoch())
 
     gfx.sprite.update()
-
-    -- refresh target view cause display bug :(
-    targetSprite:setVisible(false)
-    gunSprite:draw()
-    targetSprite:setVisible(true)
 
     playdate.timer.updateTimers()
     playdate.frameTimer.updateTimers()

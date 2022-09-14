@@ -49,9 +49,9 @@ function GunSprite:fire(barrel)
         self.fireCustomAnimation:start()
 
         if barrel == BarrelEnum.LEFT then
-            --self.leftBarrelFilled = false
+            self.leftBarrelFilled = false
         elseif barrel == BarrelEnum.RIGHT then
-            --self.rightBarrelFilled = false
+            self.rightBarrelFilled = false
         end
     end
 end
@@ -64,8 +64,6 @@ end
 
 function GunSprite:update()
     GunSprite.super.update(self)
-end
 
-function GunSprite:draw()
     self:drawFire()
 end
