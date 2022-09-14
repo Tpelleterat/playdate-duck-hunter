@@ -32,14 +32,44 @@ function CustomAnimation:init(imagetable, delay, drawPositionCallBack, ...)
     end
 end
 
-function CustomAnimation:start()
+function CustomAnimation:revertImages()
+    for key, value in pairs(self.animationPicturesList) do
+        value.imageSprite:setImageFlip(playdate.graphics.kImageFlippedX)
+    end
+end
+
+function CustomAnimation:setZindex(index)
+    for key, value in pairs(self.animationPicturesList) do
+        value.imageSprite:setZIndex(index)
+    end
+end
+
+function CustomAnimation:start(setRepeat)
     self.animation = gfx.animator.new(self.delay, 1, #self.animationPicturesList + 1)
+
+    if setRepeat ~= nil then
+        self.animation.repeatCount = setRepeat
+    end
+end
+
+function CustomAnimation:stop(setRepeat)
+    if self.animation ~= nil then
+        self.animation = nil
+        self:removeCurrentSprite()
+    end
 end
 
 function CustomAnimation:draw()
     local index = math.floor(self.animation:currentValue())
 
     if index <= #self.animationPicturesList then
+
+        local picture = self.animationPicturesList[index]
+
+        local w, h = picture.image:getSize()
+        local xPos, yPos = self.drawPositionCallBack(w, h, picture.ajustX, picture.ajustY)
+
+        picture.imageSprite:moveTo(xPos, yPos)
 
         if self.showIndex ~= index then
 
@@ -48,19 +78,18 @@ function CustomAnimation:draw()
                 gfx.sprite.removeSprite(previousPicture.imageSprite)
             end
 
-            local picture = self.animationPicturesList[index]
 
-            local w, h = picture.image:getSize()
-            local xPos, yPos = self.drawPositionCallBack(w, h, picture.ajustX, picture.ajustY)
-
-            picture.imageSprite:moveTo(xPos, yPos)
             picture.imageSprite:add()
 
             self.showIndex = index
         end
     elseif self.showIndex ~= nil then
-        local previousPicture = self.animationPicturesList[self.showIndex]
-        gfx.sprite.removeSprite(previousPicture.imageSprite)
-        self.showIndex = nil
+        self:removeCurrentSprite()
     end
+end
+
+function CustomAnimation:removeCurrentSprite()
+    local previousPicture = self.animationPicturesList[self.showIndex]
+    gfx.sprite.removeSprite(previousPicture.imageSprite)
+    self.showIndex = nil
 end
