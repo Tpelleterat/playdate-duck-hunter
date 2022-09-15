@@ -2,3 +2,4 @@ name=Duck Hunter
 author=Timothée Pelleterat
 bundleID=net.tpel.duckhunter
 version=1.0
+imagePath=images/launch

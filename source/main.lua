@@ -66,7 +66,7 @@ local function updateMenu()
         gfx.setFont(font)
         menu:draw(0, 0)
 
-        local textsXPosition = 120
+        local textsXPosition = 170
 
         if gameStatus == GameStatusEnum.SCORE then
             gfx.setFont(font)
@@ -76,8 +76,8 @@ local function updateMenu()
 
             gfx.setFont(font2)
 
-            gfx.drawText("Shoot ducks.", textsXPosition, 120)
-            gfx.drawText("The gun has only 2 bullets, A and B.", textsXPosition, 140)
+            gfx.drawText("Shoot ducks with A and B.", textsXPosition, 120)
+            gfx.drawText("The gun has only 2 bullets.", textsXPosition, 140)
             gfx.drawText("Use crank to reload.", textsXPosition, 160)
 
             gfx.setFont(font)
