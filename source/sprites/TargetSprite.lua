@@ -43,40 +43,41 @@ end
 function TargetSprite:update()
     TargetSprite.super.update(self)
 
-    local newX = self.x
-    local newY = self.y
-
-    if playdate.buttonIsPressed(playdate.kButtonUp) then
-        newY = newY - self.speed
-        if newY < 0 then
-            newY = 0
-        end
-    end
-    if playdate.buttonIsPressed(playdate.kButtonRight) then
-        newX = newX + self.speed
-        if newX > 400 - self.width then
-            newX = 400 - self.width
-        end
-    end
-    if playdate.buttonIsPressed(playdate.kButtonDown) then
-        newY = newY + self.speed
-        if newY > 240 - self.height then
-            newY = 240 - self.height
-        end
-    end
-    if playdate.buttonIsPressed(playdate.kButtonLeft) then
-        newX = newX - self.speed
-        if newX < 0 then
-            newX = 0
-        end
-    end
-
-    if newX ~= self.x or newY ~= self.y then
-        self:moveTo(newX, newY)
-    end
-
-    -- refresh target view cause display bug :(
     if self:isVisible() then
+
+        local newX = self.x
+        local newY = self.y
+
+        if playdate.buttonIsPressed(playdate.kButtonUp) then
+            newY = newY - self.speed
+            if newY < 0 then
+                newY = 0
+            end
+        end
+        if playdate.buttonIsPressed(playdate.kButtonRight) then
+            newX = newX + self.speed
+            if newX > 400 - self.width then
+                newX = 400 - self.width
+            end
+        end
+        if playdate.buttonIsPressed(playdate.kButtonDown) then
+            newY = newY + self.speed
+            if newY > 240 - self.height then
+                newY = 240 - self.height
+            end
+        end
+        if playdate.buttonIsPressed(playdate.kButtonLeft) then
+            newX = newX - self.speed
+            if newX < 0 then
+                newX = 0
+            end
+        end
+
+        if newX ~= self.x or newY ~= self.y then
+            self:moveTo(newX, newY)
+        end
+
+        -- refresh target view cause display bug :(
         self:setVisible(false)
         self:setVisible(true)
     end
