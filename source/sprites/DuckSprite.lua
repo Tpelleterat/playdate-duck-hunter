@@ -17,7 +17,8 @@ function DuckSprite:init(x, y, width, height, direction)
     self:setCenter(0, 0)
     self:moveTo(x, y)
 
-    self:setCollideRect(0, 0, self:getSize())
+    local w, h = self:getSize()
+    self:setCollideRect(5, 5, w - 10, h - 10)
 
     self:initAnimation(direction)
     self:initMovement(direction)

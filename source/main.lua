@@ -1,3 +1,4 @@
+import "CoreLibs/ui"
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
@@ -15,21 +16,27 @@ import "sprites/DuckAreaSprite"
 import "sprites/DuckSprite"
 import "models/BarrelEnum"
 import "models/DuckMovementDirectionEnum"
+import "models/GameStatusEnum"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
+local gameStatus = GameStatusEnum.MENU
 local gunSprite
 local targetSprite
 local duckAreaSprite
 local playTimer = nil
-local playTime = 30 * 1000
+local playTime = 60 * 1000
+local finalScore = 0
+
+local menu = gfx.image.new("images/menu")
+local font = playdate.graphics.font.new('fonts/Test')
 
 local function resetTimer()
-    playTimer = playdate.timer.new(playTime, playTime, 0, playdate.easingFunctions.linear)
+    playTimer = playdate.timer.new(playTime, playTime, 0)
 end
 
-local function initialize()
+local function startGame()
     gfx.getSystemFont(gfx.font.kVariantNormal)
 
     gunSprite = GunSprite(0, 0)
@@ -44,26 +51,71 @@ local function initialize()
     resetTimer()
 end
 
-initialize()
+local function showScore()
+    finalScore = duckAreaSprite.killCount
+
+    gameStatus = GameStatusEnum.SCORE
+    playdate.graphics.sprite.removeAll()
+    playdate.graphics.clear()
+    gunSprite = nil
+    targetSprite = nil
+    duckAreaSprite = nil
+end
+
+local function updateMenu()
+    if gameStatus == GameStatusEnum.MENU or gameStatus == GameStatusEnum.SCORE then
+
+        gfx.setFont(font)
+        menu:draw(0, 0)
+        gfx.drawText("Press A to start.", 220, 120 + 50)
+
+        if gameStatus == GameStatusEnum.SCORE then
+            gfx.drawText("Score : " .. finalScore, 220, 120)
+        end
+
+        if playdate.buttonJustPressed(playdate.kButtonA) and not playdate.isCrankDocked() then
+            playdate.graphics.clear()
+            gameStatus = GameStatusEnum.GAME
+            startGame()
+        end
+    end
+end
+
+local function updateGame()
+    if gameStatus == GameStatusEnum.GAME then
+
+        if playTimer.value == 0 then
+            showScore();
+        else
+            if gunSprite.pendingRefill and targetSprite:isVisible() then
+                targetSprite:setVisible(false)
+            elseif not gunSprite.pendingRefill and not targetSprite:isVisible() then
+                targetSprite:setVisible(true)
+            end
+
+            gfx.drawText("Score : " .. duckAreaSprite.killCount, 310, 210)
+
+            gfx.drawText("Time: " .. math.ceil(playTimer.value / 1000), 240, 210)
+        end
+    end
+end
+
+playdate.ui.crankIndicator:start()
 
 function playdate.update()
     math.randomseed(playdate.getSecondsSinceEpoch())
 
-    if gunSprite.pendingRefill and targetSprite:isVisible() then
-        targetSprite:setVisible(false)
-    elseif not gunSprite.pendingRefill and not targetSprite:isVisible() then
-        targetSprite:setVisible(true)
-    end
-
     gfx.sprite.update()
 
+    updateMenu()
+
+    updateGame()
+
+    if playdate.isCrankDocked() then
+        playdate.ui.crankIndicator:update()
+    end
+
     playdate.timer.updateTimers()
-    playdate.frameTimer.updateTimers()
-
-    gfx.drawText("Score : " .. duckAreaSprite.killCount, 310, 210)
-
-    gfx.drawText("Time: " .. math.ceil(playTimer.value / 1000), 240, 210)
-
 end
 
 local function fire(barrel)
@@ -73,9 +125,13 @@ local function fire(barrel)
 end
 
 function playdate.AButtonDown()
-    fire(BarrelEnum.RIGHT)
+    if gameStatus == GameStatusEnum.GAME then
+        fire(BarrelEnum.RIGHT)
+    end
 end
 
 function playdate.BButtonDown()
-    fire(BarrelEnum.LEFT)
+    if gameStatus == GameStatusEnum.GAME then
+        fire(BarrelEnum.LEFT)
+    end
 end

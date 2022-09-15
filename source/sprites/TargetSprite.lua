@@ -28,7 +28,8 @@ function TargetSprite:init(x, y, width, height)
     self:setCenter(0, 0)
 
     self.speed = 10
-    self:setCollideRect(0, 0, self:getSize())
+    local w, h = self:getSize()
+    self:setCollideRect(w / 3, h / 3, w / 3, h / 3)
 end
 
 function TargetSprite:GetX()
