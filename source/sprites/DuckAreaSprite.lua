@@ -20,12 +20,10 @@ function DuckAreaSprite:manageFire(sprites)
     for i = 1, #sprites, 1 do
         if not sprites[i].isDied then
             self.killCount = self.killCount + 1
-            sprites[i]:die()
-            -- Todo : add animation
+            sprites[i]:shoot()
         end
     end
 
-    print(#sprites)
 end
 
 function DuckAreaSprite:removeUselessDucks()

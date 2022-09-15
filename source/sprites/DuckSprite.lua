@@ -8,10 +8,12 @@ class('DuckSprite').extends(gfx.sprite)
 function DuckSprite:init(x, y, width, height, direction)
     DuckSprite.super.init(self)
     self.isDied = false
+    self.isDying = false
     self.imageIndex = 0
     self.speed = 1
     self.incrementMovementX = 0
     self.incrementMovementY = 0
+    self.dieTimer = nil
 
     self:setSize(40, 40)
     self:setCenter(0, 0)
@@ -19,6 +21,8 @@ function DuckSprite:init(x, y, width, height, direction)
 
     local w, h = self:getSize()
     self:setCollideRect(5, 5, w - 10, h - 10)
+
+    self.duckDieImage = gfx.image.new("images/duck-die-simple")
 
     self:initAnimation(direction)
     self:initMovement(direction)
@@ -70,23 +74,29 @@ function DuckSprite:initMovement(direction)
     end
 end
 
-function DuckSprite:die()
+function DuckSprite:shoot()
     self:clearCollideRect()
-    self.isDied = true
+    --self.isDied = true
+    self.isDying = true
     self.duckCustomAnimation:stop()
+    self:setImage(self.duckDieImage)
+    self.dieTimer = playdate.timer.new(150, function()
+        self.isDied = true
+    end
+    )
 end
 
 function DuckSprite:update()
     DuckSprite.super.update(self)
 
-    local newX = self.x + self.incrementMovementX
-    local newY = self.y + self.incrementMovementY
+    if not self.isDying and not self.isDied then
 
-    if newX ~= self.x or newY ~= self.y then
-        self:moveTo(newX, newY)
-    end
+        local newX = self.x + self.incrementMovementX
+        local newY = self.y + self.incrementMovementY
 
-    if not self.isDied then
+        if newX ~= self.x or newY ~= self.y then
+            self:moveTo(newX, newY)
+        end
 
         self.duckCustomAnimation:draw()
     end
