@@ -25,16 +25,13 @@ local gameStatus = GameStatusEnum.MENU
 local gunSprite
 local targetSprite
 local duckAreaSprite
-local playTimer = nil
-local playTime = 60 * 1000
+local gameTimerInitialValue = 0
+local gameDuration = 60 * 1000 -- In miliseconds
 local finalScore = 0
 
+playdate.ui.crankIndicator:start()
 local menu = gfx.image.new("images/menu")
 local font = playdate.graphics.font.new('fonts/Test')
-
-local function resetTimer()
-    playTimer = playdate.timer.new(playTime, playTime, 0)
-end
 
 local function startGame()
     gfx.getSystemFont(gfx.font.kVariantNormal)
@@ -48,7 +45,7 @@ local function startGame()
     duckAreaSprite = DuckAreaSprite()
     duckAreaSprite:add()
 
-    resetTimer()
+    gameTimerInitialValue = playdate.getCurrentTimeMilliseconds()
 end
 
 local function showScore()
@@ -84,7 +81,9 @@ end
 local function updateGame()
     if gameStatus == GameStatusEnum.GAME then
 
-        if playTimer.value == 0 then
+        local gametime = playdate.getCurrentTimeMilliseconds() - gameTimerInitialValue
+
+        if gametime > gameDuration then
             showScore();
         else
             if gunSprite.pendingRefill and targetSprite:isVisible() then
@@ -95,12 +94,10 @@ local function updateGame()
 
             gfx.drawText("Score : " .. duckAreaSprite.killCount, 310, 210)
 
-            gfx.drawText("Time: " .. math.ceil(playTimer.value / 1000), 240, 210)
+            gfx.drawText("Time: " .. math.ceil((gameDuration - gametime) / 1000), 240, 210)
         end
     end
 end
-
-playdate.ui.crankIndicator:start()
 
 function playdate.update()
     math.randomseed(playdate.getSecondsSinceEpoch())
