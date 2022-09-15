@@ -68,18 +68,20 @@ local function updateMenu()
 
         local textsXPosition = 120
 
-        gfx.drawText("Press A to start.", textsXPosition, 200)
-
         if gameStatus == GameStatusEnum.SCORE then
+            gfx.setFont(font)
             gfx.drawText("Score : " .. finalScore, textsXPosition + 50, 140)
+            gfx.drawText("Press A to restart.", textsXPosition, 200)
         else
+
             gfx.setFont(font2)
 
-            gfx.drawText("Shoot duck.", textsXPosition, 120)
-            gfx.drawText("The gun has only 2 bullets, A and B", textsXPosition, 140)
-            gfx.drawText("Use crank to reload", textsXPosition, 160)
+            gfx.drawText("Shoot ducks.", textsXPosition, 120)
+            gfx.drawText("The gun has only 2 bullets, A and B.", textsXPosition, 140)
+            gfx.drawText("Use crank to reload.", textsXPosition, 160)
 
             gfx.setFont(font)
+            gfx.drawText("Press A to start.", textsXPosition, 200)
 
         end
 
