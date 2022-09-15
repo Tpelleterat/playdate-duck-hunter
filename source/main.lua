@@ -32,6 +32,7 @@ local finalScore = 0
 playdate.ui.crankIndicator:start()
 local menu = gfx.image.new("images/menu")
 local font = playdate.graphics.font.new('fonts/Test')
+local font2 = playdate.graphics.font.new('fonts/Test2')
 
 local function startGame()
     gfx.getSystemFont(gfx.font.kVariantNormal)
@@ -64,10 +65,22 @@ local function updateMenu()
 
         gfx.setFont(font)
         menu:draw(0, 0)
-        gfx.drawText("Press A to start.", 220, 120 + 50)
+
+        local textsXPosition = 120
+
+        gfx.drawText("Press A to start.", textsXPosition, 200)
 
         if gameStatus == GameStatusEnum.SCORE then
-            gfx.drawText("Score : " .. finalScore, 220, 120)
+            gfx.drawText("Score : " .. finalScore, textsXPosition + 50, 140)
+        else
+            gfx.setFont(font2)
+
+            gfx.drawText("Shoot duck.", textsXPosition, 120)
+            gfx.drawText("The gun has only 2 bullets, A and B", textsXPosition, 140)
+            gfx.drawText("Use crank to reload", textsXPosition, 160)
+
+            gfx.setFont(font)
+
         end
 
         if playdate.buttonJustPressed(playdate.kButtonA) and not playdate.isCrankDocked() then
