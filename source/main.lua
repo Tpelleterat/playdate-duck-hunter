@@ -36,23 +36,32 @@ local font2 = playdate.graphics.font.new('fonts/Test2')
 local shoot_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-target")
 local shoot_no_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-no-target")
 local scoreSound = playdate.sound.sampleplayer.new("sounds/arrive-score")
+local startGameSound = playdate.sound.sampleplayer.new("sounds/dogs-start-game")
+local gameSound = playdate.sound.sampleplayer.new("sounds/game")
+local start_menu_Sound = playdate.sound.sampleplayer.new("sounds/start-menu")
+
+start_menu_Sound:play();
 
 local function startGame()
+    start_menu_Sound:stop()
     gfx.getSystemFont(gfx.font.kVariantNormal)
 
     gunSprite = GunSprite(0, 0)
     gunSprite:add()
 
-    targetSprite = TargetSprite(400 / 2, 240 / 2, 40, 40)
+    targetSprite = TargetSprite(400 / 2 - 20, 240 / 2, 40, 40)
     targetSprite:add()
 
     duckAreaSprite = DuckAreaSprite()
     duckAreaSprite:add()
 
     gameTimerInitialValue = playdate.getCurrentTimeMilliseconds()
+    startGameSound:play()
+    gameSound:play(0)
 end
 
 local function showScore()
+    gameSound:stop()
     finalScore = duckAreaSprite.killCount
 
     gameStatus = GameStatusEnum.SCORE
