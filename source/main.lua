@@ -30,7 +30,7 @@ local gameDuration = 60 * 1000 -- In miliseconds
 local finalScore = 0
 
 playdate.ui.crankIndicator:start()
-local menu = gfx.image.new("images/menu")
+local menuBackgroundImage = gfx.image.new("images/menu")
 local font = playdate.graphics.font.new('fonts/Test')
 local font2 = playdate.graphics.font.new('fonts/Test2')
 local fontLarge = playdate.graphics.font.new('fonts/Asheville-Mono-Light-24-px')
@@ -42,6 +42,21 @@ local gameSound = playdate.sound.sampleplayer.new("sounds/game")
 local start_menu_Sound = playdate.sound.sampleplayer.new("sounds/start-menu")
 
 start_menu_Sound:play();
+
+local systemMenu = playdate.getSystemMenu()
+local restartGameMenu = nil
+
+local function stopGame()
+    gameSound:stop()
+    finalScore = duckAreaSprite.killCount
+    playdate.graphics.sprite.removeAll()
+    playdate.graphics.clear()
+    gunSprite = nil
+    targetSprite = nil
+    duckAreaSprite = nil
+
+    systemMenu:removeMenuItem(restartGameMenu)
+end
 
 local function startGame()
     start_menu_Sound:stop()
@@ -59,18 +74,19 @@ local function startGame()
     gameTimerInitialValue = playdate.getCurrentTimeMilliseconds()
     startGameSound:play()
     gameSound:play(0)
+
+    local menuItem, error = systemMenu:addMenuItem("Restart game", function()
+        stopGame()
+        startGame()
+    end)
+    restartGameMenu = menuItem
 end
 
 local function showScore()
-    gameSound:stop()
-    finalScore = duckAreaSprite.killCount
+    stopGame()
 
     gameStatus = GameStatusEnum.SCORE
-    playdate.graphics.sprite.removeAll()
-    playdate.graphics.clear()
-    gunSprite = nil
-    targetSprite = nil
-    duckAreaSprite = nil
+
     scoreSound:play()
 end
 
@@ -78,7 +94,7 @@ local function updateMenu()
     if gameStatus == GameStatusEnum.MENU or gameStatus == GameStatusEnum.SCORE then
 
         gfx.setFont(font)
-        menu:draw(0, 0)
+        menuBackgroundImage:draw(0, 0)
 
         local textsXPosition = 170
 
