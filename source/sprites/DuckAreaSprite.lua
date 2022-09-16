@@ -47,7 +47,7 @@ end
 function DuckAreaSprite:generateDuck()
     local count = self:duckGenerationTimer();
 
-    if count > 1000 then
+    if count > 1500 then
 
         local randomDirection = self:getRandomDirection()
 
