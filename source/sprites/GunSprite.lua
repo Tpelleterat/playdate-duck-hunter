@@ -9,6 +9,7 @@ function GunSprite:init(x, y, r)
     self.rightBarrelFilled = true
 
     self.reloadSound = playdate.sound.sampleplayer.new("sounds/reload")
+    self.emptyTriggerSound = playdate.sound.sampleplayer.new("sounds/empty-trigger")
 
     self:initGunImage()
     self:initFireAnimation()
@@ -55,13 +56,24 @@ function GunSprite:CanFire(barrel)
         return false
     end
 
-    if barrel == BarrelEnum.LEFT and self.leftBarrelFilled then
-        return true
+    if barrel == BarrelEnum.LEFT then
+        if self.leftBarrelFilled then
+            return true
+        else
+            self.emptyTriggerSound:play()
+        end
     end
 
-    if barrel == BarrelEnum.RIGHT and self.rightBarrelFilled then
-        return true
+
+    if barrel == BarrelEnum.RIGHT then
+        if self.rightBarrelFilled then
+            return true
+        else
+            self.emptyTriggerSound:play()
+        end
     end
+
+    return false
 end
 
 function GunSprite:fire(barrel)

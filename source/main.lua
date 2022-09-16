@@ -33,6 +33,7 @@ playdate.ui.crankIndicator:start()
 local menu = gfx.image.new("images/menu")
 local font = playdate.graphics.font.new('fonts/Test')
 local font2 = playdate.graphics.font.new('fonts/Test2')
+local fontLarge = playdate.graphics.font.new('fonts/Asheville-Mono-Light-24-px')
 local shoot_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-target")
 local shoot_no_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-no-target")
 local scoreSound = playdate.sound.sampleplayer.new("sounds/arrive-score")
@@ -82,8 +83,9 @@ local function updateMenu()
         local textsXPosition = 170
 
         if gameStatus == GameStatusEnum.SCORE then
+            gfx.setFont(fontLarge)
+            gfx.drawText("Score : " .. finalScore, textsXPosition, 140)
             gfx.setFont(font)
-            gfx.drawText("Score : " .. finalScore, textsXPosition + 50, 140)
             gfx.drawText("Press A to restart.", textsXPosition, 200)
         else
             gfx.setFont(font2)
