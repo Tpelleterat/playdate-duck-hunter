@@ -34,7 +34,7 @@ function DuckAreaSprite:removeUselessDucks()
     local newDuckList = {}
 
     for key, value in pairs(self.ducks) do
-        if not value.isDied and value.x < 450 and value.x > -40 and value.y > -50 then
+        if not value.isDied and value.x < 460 and value.x > -60 and value.y > -60 then
             table.insert(newDuckList, value)
         else
             gfx.sprite.removeSprite(value)
