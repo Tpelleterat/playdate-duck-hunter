@@ -88,13 +88,18 @@ end
 
 function DuckAreaSprite:getRandomDirection()
     math.randomseed(playdate.getSecondsSinceEpoch())
-    local random = math.random(0, 4)
+    local random = math.random(1000, 6000)
+    local randomValue = math.floor(random / 1000 - 1)
 
-    if self.previousRandomDirection == random then
-        random = math.random(0, 4)
+    -- Avoid two same value
+    if self.previousRandomDirection ~= -1 and self.previousRandomDirection == randomValue then
+        random = math.random(1000, 6000)
+        randomValue = math.floor(random / 1000 - 1)
     end
 
-    return random
+    self.previousRandomDirection = randomValue
+
+    return randomValue
 end
 
 function DuckAreaSprite:update()
