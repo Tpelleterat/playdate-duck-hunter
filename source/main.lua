@@ -35,6 +35,7 @@ local font = playdate.graphics.font.new('fonts/Test')
 local font2 = playdate.graphics.font.new('fonts/Test2')
 local shoot_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-target")
 local shoot_no_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-no-target")
+local scoreSound = playdate.sound.sampleplayer.new("sounds/arrive-score")
 
 local function startGame()
     gfx.getSystemFont(gfx.font.kVariantNormal)
@@ -60,6 +61,7 @@ local function showScore()
     gunSprite = nil
     targetSprite = nil
     duckAreaSprite = nil
+    scoreSound:play()
 end
 
 local function updateMenu()
@@ -87,6 +89,7 @@ local function updateMenu()
         end
 
         if playdate.buttonJustPressed(playdate.kButtonA) and not playdate.isCrankDocked() then
+            scoreSound:stop()
             playdate.graphics.clear()
             gameStatus = GameStatusEnum.GAME
             startGame()
