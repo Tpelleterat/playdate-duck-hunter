@@ -33,6 +33,8 @@ playdate.ui.crankIndicator:start()
 local menu = gfx.image.new("images/menu")
 local font = playdate.graphics.font.new('fonts/Test')
 local font2 = playdate.graphics.font.new('fonts/Test2')
+local shoot_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-target")
+local shoot_no_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-no-target")
 
 local function startGame()
     gfx.getSystemFont(gfx.font.kVariantNormal)
@@ -73,7 +75,6 @@ local function updateMenu()
             gfx.drawText("Score : " .. finalScore, textsXPosition + 50, 140)
             gfx.drawText("Press A to restart.", textsXPosition, 200)
         else
-
             gfx.setFont(font2)
 
             gfx.drawText("Shoot ducks with A and B.", textsXPosition, 120)
@@ -132,7 +133,13 @@ end
 
 local function fire(barrel)
     if gunSprite:fire(barrel) then
-        duckAreaSprite:manageFire(targetSprite:overlappingSprites())
+        local touch = duckAreaSprite:manageFire(targetSprite:overlappingSprites())
+
+        if touch then
+            shoot_target_Sound:play()
+        else
+            shoot_no_target_Sound:play()
+        end
     end
 end
 

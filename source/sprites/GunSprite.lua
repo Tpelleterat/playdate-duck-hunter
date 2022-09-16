@@ -1,5 +1,4 @@
-local pd <const> = playdate
-local gfx <const> = pd.graphics
+local gfx <const> = playdate.graphics
 
 class('GunSprite').extends(gfx.sprite)
 
@@ -8,6 +7,8 @@ function GunSprite:init(x, y, r)
     self.pendingRefill = false
     self.leftBarrelFilled = true
     self.rightBarrelFilled = true
+
+    self.reloadSound = playdate.sound.sampleplayer.new("sounds/reload")
 
     self:initGunImage()
     self:initFireAnimation()
@@ -83,6 +84,7 @@ function GunSprite:checkShouldReload()
     local degreesChanged = playdate.getCrankChange()
 
     if not self.pendingRefill and degreesChanged > 30 then
+        self.reloadSound:play()
         self:reload()
     end
 end
@@ -102,6 +104,7 @@ function GunSprite:updateReload()
     if self.reloadCustomAnimation.animation ~= nil and not self.reloadCustomAnimation.animation:ended() then
         self.reloadCustomAnimation:draw()
     elseif self.pendingRefill then
+        self.reloadSound:stop()
         self.leftBarrelFilled = true
         self.rightBarrelFilled = true
         self.pendingRefill = false

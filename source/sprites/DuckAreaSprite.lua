@@ -16,14 +16,18 @@ function DuckAreaSprite:init()
 end
 
 function DuckAreaSprite:manageFire(sprites)
+    local touch = false
 
     for i = 1, #sprites, 1 do
         if not sprites[i].isDied then
             self.killCount = self.killCount + 1
             sprites[i]:shoot()
+
+            touch = true
         end
     end
 
+    return touch
 end
 
 function DuckAreaSprite:removeUselessDucks()
