@@ -84,7 +84,7 @@ local function updateMenu()
 
         if gameStatus == GameStatusEnum.SCORE then
             gfx.setFont(fontLarge)
-            gfx.drawText("Score : " .. finalScore, textsXPosition, 140)
+            gfx.drawText("Score : " .. finalScore, textsXPosition, 130)
             gfx.setFont(font)
             gfx.drawText("Press A to restart.", textsXPosition, 200)
         else
