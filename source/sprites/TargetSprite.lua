@@ -32,14 +32,6 @@ function TargetSprite:init(x, y, width, height)
     self:setCollideRect(w / 3, h / 3, w / 3, h / 3)
 end
 
-function TargetSprite:GetX()
-    return self.x + self.width / 2
-end
-
-function TargetSprite:GetY()
-    return self.y + self.height / 2
-end
-
 function TargetSprite:update()
     TargetSprite.super.update(self)
 
@@ -77,7 +69,7 @@ function TargetSprite:update()
             self:moveTo(newX, newY)
         end
 
-        -- refresh target view cause display bug :(
+        -- refresh this sprite view cause display bug :(
         self:setVisible(false)
         self:setVisible(true)
     end

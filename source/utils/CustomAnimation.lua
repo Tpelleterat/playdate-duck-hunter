@@ -1,7 +1,7 @@
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-class('CustomAnimation').extends()
+class('CustomAnimation').extends(gfx.sprite)
 
 function CustomAnimation:init(imagetable, delay, drawPositionCallBack, ...)
     CustomAnimation.super.init(self)
@@ -12,6 +12,7 @@ function CustomAnimation:init(imagetable, delay, drawPositionCallBack, ...)
     self.drawPositionCallBack = drawPositionCallBack
     self.animation = nil
     self.showIndex = nil
+    self.infinitLoop = false
 
     local ajustIndex = 1
     for i = 1, imagetable:getLength(), 1 do
@@ -32,6 +33,10 @@ function CustomAnimation:init(imagetable, delay, drawPositionCallBack, ...)
     end
 end
 
+function CustomAnimation:setInfinitLoot(infinitLoop)
+    self.infinitLoop = infinitLoop
+end
+
 function CustomAnimation:revertImages()
     for key, value in pairs(self.animationPicturesList) do
         value.imageSprite:setImageFlip(playdate.graphics.kImageFlippedX)
@@ -44,22 +49,24 @@ function CustomAnimation:setZindex(index)
     end
 end
 
-function CustomAnimation:start(setRepeat)
+function CustomAnimation:start()
     self.animation = gfx.animator.new(self.delay, 1, #self.animationPicturesList + 1)
-
-    if setRepeat ~= nil then
-        self.animation.repeatCount = setRepeat
-    end
+    -- add this sprint to use auto update loop method
+    self:add()
 end
 
 function CustomAnimation:stop()
     if self.animation ~= nil then
+        -- remove self to stop update
+        gfx.sprite.removeSprite(self)
         self.animation = nil
         self:removeCurrentSprite()
     end
 end
 
-function CustomAnimation:draw()
+function CustomAnimation:update()
+    CustomAnimation.super.update(self)
+
     local index = math.floor(self.animation:currentValue())
 
     if index <= #self.animationPicturesList then
@@ -78,13 +85,18 @@ function CustomAnimation:draw()
                 gfx.sprite.removeSprite(previousPicture.imageSprite)
             end
 
-
             picture.imageSprite:add()
 
             self.showIndex = index
         end
-    elseif self.showIndex ~= nil then
-        self:removeCurrentSprite()
+    end
+
+    if self.animation:ended() then
+        if self.infinitLoop then
+            self.animation:reset()
+        else
+            self:stop()
+        end
     end
 end
 

@@ -43,8 +43,9 @@ function DuckSprite:initAnimation(direction)
     if direction == DuckMovementDirectionEnum.LEFT or direction == DuckMovementDirectionEnum.DIAGONAL_LEFT then
         self.duckCustomAnimation:revertImages()
     end
-    --TODO : change repeat to use infinit loop
-    self.duckCustomAnimation:start(20000)
+
+    self.duckCustomAnimation:setInfinitLoot(true)
+    self.duckCustomAnimation:start()
 end
 
 function DuckSprite:loadImagetable(direction)
@@ -96,8 +97,6 @@ function DuckSprite:update()
         if newX ~= self.x or newY ~= self.y then
             self:moveTo(newX, newY)
         end
-
-        self.duckCustomAnimation:draw()
     end
 
     -- refresh target view cause display bug :(

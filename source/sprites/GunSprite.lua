@@ -52,7 +52,7 @@ function GunSprite:initReloadAnimation()
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 end
 
-function GunSprite:CanFire(barrel)
+function GunSprite:canFire(barrel)
     if self.pendingRefill then
         return false
     end
@@ -78,7 +78,7 @@ function GunSprite:CanFire(barrel)
 end
 
 function GunSprite:fire(barrel)
-    if self:CanFire(barrel) then
+    if self:canFire(barrel) then
         self.fireCustomAnimation:start()
 
         if barrel == BarrelEnum.LEFT then
@@ -107,16 +107,9 @@ function GunSprite:reload()
     self.reloadCustomAnimation:start()
 end
 
-function GunSprite:drawFire()
-    if self.fireCustomAnimation.animation ~= nil and not self.fireCustomAnimation.animation:ended() then
-        self.fireCustomAnimation:draw()
-    end
-end
-
 function GunSprite:updateReload()
-    if self.reloadCustomAnimation.animation ~= nil and not self.reloadCustomAnimation.animation:ended() then
-        self.reloadCustomAnimation:draw()
-    elseif self.pendingRefill then
+    if self.pendingRefill and
+        (self.reloadCustomAnimation.animation == nil or self.reloadCustomAnimation.animation:ended()) then
         self.reloadSound:stop()
         self.leftBarrelFilled = true
         self.rightBarrelFilled = true
@@ -136,8 +129,6 @@ function GunSprite:update()
     GunSprite.super.update(self)
 
     self:manageGunVisibility()
-
-    self:drawFire()
 
     self:checkShouldReload()
 
