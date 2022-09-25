@@ -1,16 +1,5 @@
 local gfx <const> = playdate.graphics
 
-local previousLoopTime = 0
---- Add this code to get delta time between
---- local dt = getDeltaTime()
-function getDeltaTime()
-    local currentTime = playdate.getCurrentTimeMilliseconds()
-    local deltaTime = currentTime - previousLoopTime
-    previousLoopTime = currentTime
-
-    return deltaTime
-end
-
 function createSprite(width, height, posX, posY, callback)
     local newSprite = gfx.sprite.new()
 
