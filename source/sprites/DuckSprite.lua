@@ -76,7 +76,6 @@ end
 
 function DuckSprite:shoot()
     self:clearCollideRect()
-    --self.isDied = true
     self.isDying = true
     self.duckCustomAnimation:stop()
     self:setImage(self.duckDieImage)

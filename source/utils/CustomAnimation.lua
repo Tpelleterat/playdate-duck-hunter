@@ -52,7 +52,7 @@ function CustomAnimation:start(setRepeat)
     end
 end
 
-function CustomAnimation:stop(setRepeat)
+function CustomAnimation:stop()
     if self.animation ~= nil then
         self.animation = nil
         self:removeCurrentSprite()
