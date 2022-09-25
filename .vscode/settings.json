@@ -5,7 +5,7 @@
       "commands": [
              {
                  "match": "\\.lua$",
-                 "cmd": "pdc ${workspaceFolder}/source bin/duckhunter.pdx"
+                 "cmd": "mkdir ${workspaceFolder}\\bin | pdc ${workspaceFolder}\\source ${workspaceFolder}\\bin\\duckhunter.pdx"
              }
       ]
 },
