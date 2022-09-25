@@ -29,18 +29,18 @@ local gameTimerInitialValue = 0
 local gameDuration = 60 * 1000 -- In miliseconds
 local finalScore = 0
 
-playdate.ui.crankIndicator:start()
-local menuBackgroundImage = gfx.image.new("images/menu")
-local fontStandardBold = playdate.graphics.font.new('fonts/StandardBold')
-local fontStandard = playdate.graphics.font.new('fonts/Standard')
-local fontLarge = playdate.graphics.font.new('fonts/Asheville-Mono-Light-24-px')
-local shoot_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-target")
-local shoot_no_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-no-target")
-local scoreSound = playdate.sound.sampleplayer.new("sounds/arrive-score")
-local startGameSound = playdate.sound.sampleplayer.new("sounds/dogs-start-game")
-local gameSound = playdate.sound.sampleplayer.new("sounds/game")
-local start_menu_Sound = playdate.sound.sampleplayer.new("sounds/start-menu")
+local menuBackgroundImage = gfx.image.new("assets/images/menu")
+local fontStandardBold = playdate.graphics.font.new('assets/fonts/StandardBold')
+local fontStandard = playdate.graphics.font.new('assets/fonts/Standard')
+local fontLarge = playdate.graphics.font.new('assets/fonts/Asheville-Mono-Light-24-px')
+local shoot_target_Sound = playdate.sound.sampleplayer.new("assets/sounds/shoot-target")
+local shoot_no_target_Sound = playdate.sound.sampleplayer.new("assets/sounds/shoot-no-target")
+local scoreSound = playdate.sound.sampleplayer.new("assets/sounds/arrive-score")
+local startGameSound = playdate.sound.sampleplayer.new("assets/sounds/dogs-start-game")
+local gameSound = playdate.sound.sampleplayer.new("assets/sounds/game")
+local start_menu_Sound = playdate.sound.sampleplayer.new("assets/sounds/start-menu")
 
+playdate.ui.crankIndicator:start()
 start_menu_Sound:play();
 
 local systemMenu = playdate.getSystemMenu()

@@ -8,8 +8,8 @@ function GunSprite:init(x, y, r)
     self.leftBarrelFilled = true
     self.rightBarrelFilled = true
 
-    self.reloadSound = playdate.sound.sampleplayer.new("sounds/reload")
-    self.emptyTriggerSound = playdate.sound.sampleplayer.new("sounds/empty-trigger")
+    self.reloadSound = playdate.sound.sampleplayer.new("assets/sounds/reload")
+    self.emptyTriggerSound = playdate.sound.sampleplayer.new("assets/sounds/empty-trigger")
     self.emptyTriggerSound:setVolume(0.4)
 
     self:initGunImage()
@@ -19,7 +19,7 @@ end
 
 function GunSprite:initGunImage()
     self.standardPosition = gfx.sprite.new()
-    self.gunReadyPositionImage = gfx.image.new("images/gun-standard-position")
+    self.gunReadyPositionImage = gfx.image.new("assets/images/gun-standard-position")
     local w, h = self.gunReadyPositionImage:getSize()
     self.standardPosition:setSize(w, h)
     self.standardPosition:setImage(self.gunReadyPositionImage)
@@ -29,7 +29,7 @@ function GunSprite:initGunImage()
 end
 
 function GunSprite:initFireAnimation()
-    local fireImageList = gfx.imagetable.new("images/gun-fire")
+    local fireImageList = gfx.imagetable.new("assets/images/gun-fire")
     local animDrawPositionCallback = function(w, h, ajustX, ajustY)
         local xPos = self.standardPosition.x + ajustX
         local yPos = self.standardPosition.y - h + ajustY
@@ -40,7 +40,7 @@ function GunSprite:initFireAnimation()
 end
 
 function GunSprite:initReloadAnimation()
-    local fireImageList = gfx.imagetable.new("images/gun-reload")
+    local fireImageList = gfx.imagetable.new("assets/images/gun-reload")
 
     local animDrawPositionCallback = function(w, h, ajustX, ajustY)
         local xPos = 400 / 2 - w / 2 + ajustX

@@ -22,7 +22,7 @@ function DuckSprite:init(x, y, width, height, direction)
     local w, h = self:getSize()
     self:setCollideRect(5, 5, w - 10, h - 10)
 
-    self.duckDieImage = gfx.image.new("images/duck-die-simple")
+    self.duckDieImage = gfx.image.new("assets/images/duck-die-simple")
 
     self:initAnimation(direction)
     self:initMovement(direction)
@@ -50,11 +50,11 @@ end
 function DuckSprite:loadImagetable(direction)
 
     if direction == DuckMovementDirectionEnum.TOP then
-        return gfx.imagetable.new("images/duck-t")
+        return gfx.imagetable.new("assets/images/duck-t")
     elseif direction == DuckMovementDirectionEnum.LEFT or direction == DuckMovementDirectionEnum.RIGHT then
-        return gfx.imagetable.new("images/duck-h")
+        return gfx.imagetable.new("assets/images/duck-h")
     elseif direction == DuckMovementDirectionEnum.DIAGONAL_LEFT or direction == DuckMovementDirectionEnum.DIAGONAL_RIGHT then
-        return gfx.imagetable.new("images/duck-d")
+        return gfx.imagetable.new("assets/images/duck-d")
     end
 end
 
