@@ -31,8 +31,8 @@ local finalScore = 0
 
 playdate.ui.crankIndicator:start()
 local menuBackgroundImage = gfx.image.new("images/menu")
-local font = playdate.graphics.font.new('fonts/Test')
-local font2 = playdate.graphics.font.new('fonts/Test2')
+local fontStandardBold = playdate.graphics.font.new('fonts/StandardBold')
+local fontStandard = playdate.graphics.font.new('fonts/Standard')
 local fontLarge = playdate.graphics.font.new('fonts/Asheville-Mono-Light-24-px')
 local shoot_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-target")
 local shoot_no_target_Sound = playdate.sound.sampleplayer.new("sounds/shoot-no-target")
@@ -93,7 +93,7 @@ end
 local function updateMenu()
     if gameStatus == GameStatusEnum.MENU or gameStatus == GameStatusEnum.SCORE then
 
-        gfx.setFont(font)
+        gfx.setFont(fontStandardBold)
         menuBackgroundImage:draw(0, 0)
 
         local textsXPosition = 170
@@ -101,16 +101,16 @@ local function updateMenu()
         if gameStatus == GameStatusEnum.SCORE then
             gfx.setFont(fontLarge)
             gfx.drawText("Score : " .. finalScore, textsXPosition, 130)
-            gfx.setFont(font)
+            gfx.setFont(fontStandardBold)
             gfx.drawText("Press A to restart.", textsXPosition, 200)
         else
-            gfx.setFont(font2)
+            gfx.setFont(fontStandard)
 
             gfx.drawText("Shoot ducks with A and B.", textsXPosition, 120)
             gfx.drawText("The gun has only 2 bullets.", textsXPosition, 140)
             gfx.drawText("Use crank to reload.", textsXPosition, 160)
 
-            gfx.setFont(font)
+            gfx.setFont(fontStandardBold)
             gfx.drawText("Press A to start.", textsXPosition, 200)
 
         end

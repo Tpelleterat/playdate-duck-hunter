@@ -10,6 +10,7 @@ function GunSprite:init(x, y, r)
 
     self.reloadSound = playdate.sound.sampleplayer.new("sounds/reload")
     self.emptyTriggerSound = playdate.sound.sampleplayer.new("sounds/empty-trigger")
+    self.emptyTriggerSound:setVolume(0.4)
 
     self:initGunImage()
     self:initFireAnimation()
