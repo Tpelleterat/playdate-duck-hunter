@@ -1,9 +1,8 @@
 # Duck Hunter
 
-Video game for Playdate.
+You are in a forest with a buckshot gun. Flying ducks. Enjoy!
 
 [![GAME VIDEO DEMO](http://img.youtube.com/vi/vCKdGLf996Q/0.jpg)](http://www.youtube.com/watch?v=vCKdGLf996Q)
-
 
 ## Get started
 
