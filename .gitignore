@@ -1,4 +1,7 @@
 # Compiled Lua sources
+#playdate
+/main.pdx
+
 luac.out
 /bin
 /.sentry-native
